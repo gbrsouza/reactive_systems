@@ -35,7 +35,7 @@ public class MapActor extends AbstractActor {
 	
 	}
 	
-	public Props props () {
+	public static Props props () {
 		return Props.create(MapActor.class);
 	}
 }

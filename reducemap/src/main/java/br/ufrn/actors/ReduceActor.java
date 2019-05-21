@@ -38,7 +38,7 @@ public class ReduceActor extends AbstractActor{
 		
 	}
 	
-	public Props props () {
+	public static Props props () {
 		return Props.create(ReduceActor.class);
 	}
 

@@ -19,5 +19,158 @@
 *.tar.gz
 *.rar
 
+# copy by https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
+
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
+
+# CDT-specific (C/C++ Development Tooling)
+.cproject
+
+# CDT- autotools
+.autotools
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific (PHP Development Tools)
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# Tern plugin
+.tern-project
+
+# TeXlipse plugin
+.texlipse
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Code Recommenders
+.recommenders/
+
+# Annotation Processing
+.apt_generated/
+
+# Scala IDE specific (Scala & Java development for Eclipse)
+.cache-main
+.scala_dependencies
+.worksheet
+
+# copy by https://github.com/akka/akka/blob/master/.gitignore
+
+*#
+*.md=
+*.log
+*.orig
+*.jfr
+*.iml
+*.ipr
+*.iws
+*.pyc
+*.tm.epoch
+*.vim
+*/project/boot
+*/project/build/target
+*/project/project.target.config-classes
+*~
+.#*
+.*.swp
+.DS_Store
+.cache
+.cache
+.classpath
+.codefellow
+.ensime*
+.eprj
+.history
+.idea
+.manager
+.multi-jvm
+.project
+.sbtserver
+.sbtserver.lock
+.scala_dependencies
+.scalastyle
+.settings
+.cache*
+.tmpBin
+.tags
+.tags_sorted_by_file
+.target
+.worksheet
+Makefile
+TAGS
+_akka_cluster/
+_dump
+_mb
+activemq-data
+akka-contrib/rst_preprocessed/
+akka-docs-dev/rst_preprocessed/
+akka-docs/_build/
+akka-docs/exts/
+akka-docs/rst_preprocessed/
+akka-osgi/src/main/resources/*.conf
+akka.sublime-project
+akka.sublime-workspace
+akka.tmproj
+beanstalk/
+bin/
+data
+deploy/*.jar
+etags
+lib_managed
+logs
+manifest.mf
+mongoDB/
+multiverse.log
+out
+project/akka-build.properties
+project/boot/*
+project/plugins/project
+redis/
+reports
+run-codefellow
+schoir.props
+semantic.cache
+src_managed
+storage
+tags
+target
+target-sbt
+tm*.lck
+tm*.log
+tm.out
+worker*.log
+*-shim.sbt
+test-output
+
+# test output of QuickStart guide
+factorials.txt
+factorial2.txt
+
+# Default sigar library extract location.
+native/

@@ -11,7 +11,7 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
-
+ 
 /**
  * Hello world!
  *
@@ -26,8 +26,9 @@ public class App
         ActorSystem system = ActorSystem.create("tfIdfSystem");
         ActorRef master = system.actorOf(MasterActor.props(), "master");
         
-        String filename = "/home/gabriel/Códigos/java/TF-iDF/TFidF/archive/stopWords.in";
+        String filename = "/home/gabriel_2016/eclipse-workspace/reactive_systems/reactive-TFidF/files/stopWords.in";
         Future<Object> future = Patterns.ask(master, new StopWordsUrl( filename ),timeout );
+        
         try {
 			StopWordData result = (StopWordData) Await.result(future, Duration.create("5 seconds"));
 			System.out.println(result.test());

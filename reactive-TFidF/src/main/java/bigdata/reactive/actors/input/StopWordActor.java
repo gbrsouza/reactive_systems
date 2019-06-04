@@ -8,6 +8,7 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.japi.pf.ReceiveBuilder;
 import bigdata.reactive.messages.StopWordData;
+import bigdata.reactive.messages.StopWordsUrl;
 
 public class StopWordActor extends AbstractActor{
 
@@ -15,8 +16,8 @@ public class StopWordActor extends AbstractActor{
 	public Receive createReceive() {
 
 		return receiveBuilder()
-				.match( String.class, msg -> {
-					getSender().tell(readStopWords(msg), getSelf());
+				.match( StopWordsUrl.class, msg -> {
+					getSender().tell(readStopWords(msg.getUrl()), getSelf());
 				}).build();
 		
 	}
@@ -48,6 +49,7 @@ public class StopWordActor extends AbstractActor{
 				line = reader.readLine();
 				id++;
 			}
+			System.out.println("consegui ler " + id + " stop words ");
 			file.close();
 			
 			// return the message 

@@ -14,7 +14,7 @@ public class MasterActor extends AbstractActor{
 	public Receive createReceive() {
 
 		return receiveBuilder()
-				.match(StopWordsUrl.class, msg -> {stopWordActor.tell(msg, getSelf());})
+				.match(StopWordsUrl.class, msg -> {stopWordActor.forward(msg, getContext());})
 				.build();
 	}
 	

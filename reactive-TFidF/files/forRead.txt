@@ -1,0 +1,10 @@
+../reactive-TFidF/files/aclImdb_v1/pos/99_10.txt
+../reactive-TFidF/files/aclImdb_v1/pos/72_8.txt
+../reactive-TFidF/files/aclImdb_v1/pos/271_7.txt
+../reactive-TFidF/files/aclImdb_v1/pos/234_7.txt
+../reactive-TFidF/files/aclImdb_v1/pos/49_10.txt
+../reactive-TFidF/files/aclImdb_v1/pos/246_10.txt
+../reactive-TFidF/files/aclImdb_v1/pos/267_10.txt
+../reactive-TFidF/files/aclImdb_v1/pos/63_10.txt
+../reactive-TFidF/files/aclImdb_v1/pos/172_7.txt
+../reactive-TFidF/files/aclImdb_v1/pos/223_10.txt

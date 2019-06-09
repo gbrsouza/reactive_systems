@@ -3,10 +3,13 @@ package bigdata.reactive.actors.input;
 import java.util.ArrayList;
 import java.util.List;
 
+import akka.actor.*;
+import static akka.actor.SupervisorStrategy.*;
+import scala.concurrent.duration.Duration;
+import akka.japi.pf.DeciderBuilder;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import akka.actor.Terminated;
 import akka.routing.ActorRefRoutee;
 import akka.routing.RoundRobinRoutingLogic;
 import akka.routing.Routee;
@@ -27,13 +30,23 @@ public class InputActor extends AbstractActor{
 	ActorRef stop_word_actor = getContext().actorOf(StopWordActor.props(), "stop_word");
 	ActorRef read_links_actor = getContext().actorOf(ReadLinksActor.props(), "read_links");
 	
+	// create supervisor strategy
+	final SupervisorStrategy routingSupervisorStrategy =
+		    new OneForOneStrategy(
+		      10,
+		      Duration.create("10 seconds"),
+		      DeciderBuilder
+		          .match(RuntimeException.class, ex -> restart())
+		          .build()
+		    );
+	
 	// create the router to read documents 
 	Router router;
 
 	{
 		List<Routee> routees = new ArrayList<Routee>();
 		for (int i = 0; i < 10; i++) {
-	    	ActorRef r = getContext().actorOf(ReadDocumentActor.props());
+	    	ActorRef r = getContext().actorOf(Props.create(ReadDocumentActor.class));
 	    	getContext().watch(r);
 	    	routees.add(new ActorRefRoutee(r));
 	    }
@@ -57,17 +70,11 @@ public class InputActor extends AbstractActor{
 					read_links_actor.tell(boot_message.getUrl_documents(), getSelf());
 				})
 				.match(UrlsDocumentsData.class, msg->{
+					
 					for ( String s : msg.getUrls() ) 
-						router.route(new ReadDocumentMessage(s, this.stop_words), getSender());
+						router.route(new ReadDocumentMessage(s, this.stop_words), getSelf());
 				})
-//				.match(Terminated.class, msg -> {
-//					router = router.removeRoutee(msg.actor());
-//					ActorRef r = getContext().actorOf(ReadDocumentActor.props());
-//			    	getContext().watch(r);
-//			    	router = router.addRoutee(new ActorRefRoutee(r));
-//				})
 			    .match(DocumentData.class, msg ->{
-			    	System.out.println("recebi");
 					aggregate_actor.tell(msg, getSelf());			
 				})
 			    .match(ResultRequest.class, msg ->{

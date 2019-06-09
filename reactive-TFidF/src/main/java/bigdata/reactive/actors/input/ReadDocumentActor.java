@@ -17,9 +17,10 @@ public class ReadDocumentActor extends AbstractActor {
 	@Override
 	public Receive createReceive() {
 		return receiveBuilder()
-				.match(ReadDocumentMessage.class, msg -> {
-					getSender().tell(this.read_document(msg), self());
+				.match(ReadDocumentMessage.class , msg -> {
+					getSender().tell(read_document(msg), getSelf());
 				}).build();
+				
 	}
 	
 	private DocumentData read_document ( ReadDocumentMessage message ) {
@@ -61,6 +62,7 @@ public class ReadDocumentActor extends AbstractActor {
 		
 		System.out.println(processed_terms + " termos processados em " + message.get_url());
 		return new DocumentData(message.get_url(), processed_terms, terms);
+	
 	}
 	
 	private List<String> tokenizer_terms( String line ){

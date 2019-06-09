@@ -17,7 +17,6 @@ public class AggregateDocumentActor extends AbstractActor {
 	public Receive createReceive() {
 		return receiveBuilder()
 				.match(DocumentData.class, msg ->{
-					System.out.println("agregando..");
 					result.add(msg);
 				})
 				.match(ResultRequest.class, msg -> {

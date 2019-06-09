@@ -8,15 +8,15 @@ public class StopWordData {
 	 * Key   - the stop word
 	 * Value - the id
 	 */
-	private final HashMap<String, Integer> stopWords;
+	private final HashMap<String, Integer> stop_words;
 	
 	/**
 	 * Construct a object to StopWordData
 	 * @param stopWords
 	 */
 	public StopWordData ( 
-		 HashMap<String, Integer> stopWords )
-	{ this.stopWords = stopWords; }
+		 HashMap<String, Integer> stop_words )
+	{ this.stop_words = stop_words; }
 	
 	/**
 	 * Get the stop words in the message
@@ -24,7 +24,13 @@ public class StopWordData {
 	 */
 	public HashMap<String, Integer> 
 	getStopWords ()
-	{ return this.stopWords; }
+	{ return this.stop_words; }
+	
+	public boolean is_stop_word ( String key ) {
+		if (stop_words.containsKey(key))
+			return true;
+		else return false;
+	}
 	
 	public String test() { return "deu bom\n"; }
 	

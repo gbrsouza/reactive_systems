@@ -8,8 +8,9 @@ import java.util.List;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
+import bigdata.reactive.messages.UrlsDocumentsData;
 
-public class ReadLinkActor extends AbstractActor {
+public class ReadLinksActor extends AbstractActor {
 
 	@Override
 	public Receive createReceive() {
@@ -24,7 +25,7 @@ public class ReadLinkActor extends AbstractActor {
 	 * @param m  the url to file
 	 * @return all urls in the file
 	 */
-	private List<String> readUrls ( String m ){
+	private UrlsDocumentsData readUrls ( String m ){
 		
 		// create the list of urls
 		ArrayList<String> urls = new ArrayList<String>();
@@ -35,14 +36,16 @@ public class ReadLinkActor extends AbstractActor {
 			FileReader file = new FileReader( m );
 			BufferedReader readFile = new BufferedReader(file);
 			String line = readFile.readLine();
-			
+			int count = 0;
 			// read all lines (urls)
 			while (line != null) {
 				line.trim();
 				urls.add(line);
 				line = readFile.readLine();
+				count ++;
 			}
 			
+			System.out.println( count + " arquivos para ler encontrados ");
 			// close file
 			file.close();
 		} catch (IOException e1) {
@@ -50,7 +53,7 @@ public class ReadLinkActor extends AbstractActor {
 					+ " " + e1.getMessage());
 		}
 		
-		return urls;
+		return new UrlsDocumentsData(urls);
 	}
 	
 	/**
@@ -58,7 +61,7 @@ public class ReadLinkActor extends AbstractActor {
 	 * @return return a this class Props 
 	 */
 	public static Props props () {
-		return Props.create(ReadLinkActor.class);
+		return Props.create(ReadLinksActor.class);
 	}
 
 }

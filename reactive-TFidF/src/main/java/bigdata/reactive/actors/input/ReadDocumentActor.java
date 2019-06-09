@@ -60,7 +60,6 @@ public class ReadDocumentActor extends AbstractActor {
 					+ " " + e1.getMessage());
 		}
 		
-		System.out.println(processed_terms + " termos processados em " + message.get_url());
 		return new DocumentData(message.get_url(), processed_terms, terms);
 	
 	}

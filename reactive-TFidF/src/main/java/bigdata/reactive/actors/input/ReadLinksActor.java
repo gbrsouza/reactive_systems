@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
@@ -45,7 +44,7 @@ public class ReadLinksActor extends AbstractActor {
 				count ++;
 			}
 			
-			System.out.println( count + " arquivos para ler encontrados ");
+			System.out.println( count + " documents to read found ");
 			// close file
 			file.close();
 		} catch (IOException e1) {

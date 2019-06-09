@@ -11,7 +11,7 @@ public class DocumentListData {
 		this.documents = documents;
 	}
 
-	public List<DocumentData> getDocuments() {
+	public List<DocumentData> get_documents() {
 		return documents;
 	}
 	

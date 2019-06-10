@@ -1,77 +1,52 @@
 package bigdata.reactive.actors.calculate;
 
-import static akka.actor.SupervisorStrategy.restart;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import akka.actor.OneForOneStrategy;
 import akka.actor.Props;
-import akka.actor.SupervisorStrategy;
-import akka.actor.Terminated;
-import akka.japi.pf.DeciderBuilder;
-import akka.routing.ActorRefRoutee;
-import akka.routing.RoundRobinRoutingLogic;
-import akka.routing.Routee;
-import akka.routing.Router;
-import bigdata.reactive.CellMultiTable;
-import bigdata.reactive.messages.CellListMessage;
-import bigdata.reactive.messages.DocumentData;
+import bigdata.reactive.messages.InverseDocListMessage;
 import bigdata.reactive.messages.RequestCalculateMessage;
-import bigdata.reactive.messages.RequestTermFrequencyMessage;
 import bigdata.reactive.messages.ResultRequest;
 import bigdata.reactive.messages.TermFrequencyListData;
-import scala.concurrent.duration.Duration;
 
-public class CalculateActor extends AbstractActor {
-	
-	// create supervisor strategy
-	final SupervisorStrategy routingSupervisorStrategy =
-		    new OneForOneStrategy(
-		      10,
-		      Duration.create("10 seconds"),
-		      DeciderBuilder
-		          .match(RuntimeException.class, ex -> restart())
-		          .build()
-		    );
-	
-	// create the router to calculate term frequency 
-	Router routerTF;
+public class CalculateActor extends AbstractActor{
 
-	{
-		List<Routee> routees = new ArrayList<Routee>();
-		for (int i = 0; i < 4; i++) {
-	    	ActorRef r = getContext().actorOf(Props.create(TermFrequencyActor.class));
-	    	getContext().watch(r);
-	    	routees.add(new ActorRefRoutee(r));
-	    }
-	    routerTF = new Router(new RoundRobinRoutingLogic(), routees);
-	}
+	private TermFrequencyListData term_frequency;
+	private InverseDocListMessage inverse_document;
+	private RequestCalculateMessage data;
 	
-	// list actors
-	ActorRef aggregate_tf = getContext().actorOf(AggregateCellList.props(), "agg_tf"); 
+	// Actor List
+	ActorRef term_frequency_actor = getContext().actorOf(CalculateTermFrequencyActor.props());
+	ActorRef inverse_distance_actor = getContext().actorOf(CalculateInverseDocumentActor.props());
 	
 	@Override
 	public Receive createReceive() {
 		return receiveBuilder()
-				.match(RequestCalculateMessage.class, msg->{
-					List<DocumentData> docs = msg.get_document_list().get_documents();
-					docs.stream().forEach(d ->
-					{
-						routerTF.route(
-							new RequestTermFrequencyMessage(d, msg.term_list()),
-							getSelf());
-					});
+				.match(RequestCalculateMessage.class, msg ->{
+					this.data = msg;
+					term_frequency_actor.tell(msg, getSelf());
+					this.wait(1000);
+					term_frequency_actor.tell(new ResultRequest(), getSelf());
 				})
-				.match(CellListMessage.class, msg ->{
-					aggregate_tf.tell(msg, getSelf());
+				.match(TermFrequencyListData.class, msg ->{
+					System.out.println(msg.getTable().size() + " cells in the term frequency table");
+					this.term_frequency = msg;
+					inverse_distance_actor.tell(data, getSelf());
+					this.wait(1000);
+					inverse_distance_actor.tell(new ResultRequest(), getSelf());
 				})
-				.match(ResultRequest.class, msg-> {
-					aggregate_tf.forward(msg, getContext());
-				}).build();
+				.match(InverseDocListMessage.class, msg ->{
+					System.out.println(msg.getInv_doc().size() + " cells in the inverse document table");
+					this.inverse_document = msg;
+				})
+				.build();
+	}
+	
+	private void wait (int ms) {
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static Props props () {

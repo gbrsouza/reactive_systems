@@ -1,17 +1,18 @@
 package bigdata.reactive.messages;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Map;
 
 public class InverseDocListMessage {
 
-	private final HashMap<String, Double> inv_doc;
+	private final Map<String, Double> inv_doc;
 
-	public InverseDocListMessage(HashMap<String, Double> inv_doc) {
+	public InverseDocListMessage(Map<String, Double> inv_doc) {
 		super();
-		this.inv_doc = inv_doc;
+		this.inv_doc = Collections.unmodifiableMap(inv_doc);
 	}
 
-	public HashMap<String, Double> getInv_doc() {
+	public Map<String, Double> getInv_doc() {
 		return inv_doc;
 	}
 	

@@ -1,5 +1,6 @@
 package bigdata.reactive.messages;
 
+import java.util.Collections;
 import java.util.List;
 
 public class DocumentListData {
@@ -8,7 +9,7 @@ public class DocumentListData {
 
 	public DocumentListData(List<DocumentData> documents) {
 		super();
-		this.documents = documents;
+		this.documents = Collections.unmodifiableList(documents);
 	}
 
 	public List<DocumentData> get_documents() {

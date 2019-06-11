@@ -51,6 +51,7 @@ public class InputActor extends AbstractActor{
 	    	routees.add(new ActorRefRoutee(r));
 	    }
 	    router = new Router(new RoundRobinRoutingLogic(), routees);
+	       
 	}
 	
 	// aggregate the list of documents

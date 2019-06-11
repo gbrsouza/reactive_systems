@@ -1,5 +1,6 @@
 package bigdata.reactive.messages;
 
+import java.util.Collections;
 import java.util.List;
 
 import bigdata.reactive.CellMultiTable;
@@ -10,7 +11,7 @@ public class CellListMessage {
 
 	public CellListMessage(List<CellMultiTable> cells) {
 		super();
-		this.cells = cells;
+		this.cells = Collections.unmodifiableList(cells);
 	}
 
 	public List<CellMultiTable> getCells() {

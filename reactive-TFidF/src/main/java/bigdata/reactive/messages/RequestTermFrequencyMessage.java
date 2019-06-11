@@ -1,6 +1,6 @@
 package bigdata.reactive.messages;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class RequestTermFrequencyMessage {
 
@@ -17,7 +17,7 @@ public class RequestTermFrequencyMessage {
 		return document;
 	}
 
-	public HashMap<String, Integer> getTerms() {
+	public Map<String, Integer> getTerms() {
 		return terms.get_terms_table();
 	}
 	

@@ -1,5 +1,6 @@
 package bigdata.reactive.messages;
 
+import java.util.Collections;
 import java.util.List;
 
 public class UrlsDocumentsData {
@@ -8,7 +9,7 @@ public class UrlsDocumentsData {
 
 	public UrlsDocumentsData(List<String> urls) {
 		super();
-		this.urls = urls;
+		this.urls = Collections.unmodifiableList(urls);
 	}
 
 	public List<String> getUrls() {

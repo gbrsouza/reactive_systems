@@ -15,15 +15,14 @@ import akka.routing.ActorRefRoutee;
 import akka.routing.RoundRobinRoutingLogic;
 import akka.routing.Routee;
 import akka.routing.Router;
-import bigdata.reactive.messages.CellListMessage;
-import bigdata.reactive.messages.DocumentData;
-import bigdata.reactive.messages.RequestCalculateMessage;
-import bigdata.reactive.messages.RequestTermFrequencyMessage;
-import bigdata.reactive.messages.ResultRequest;
+import bigdata.reactive.messages.*;
 import scala.concurrent.duration.Duration;
 
 public class CalculateTermFrequencyActor extends AbstractActor {
-	
+
+	private int total_messages;
+	private int actual_messages = 0;
+
 	// create supervisor strategy
 	final SupervisorStrategy routingSupervisorStrategy =
 		    new OneForOneStrategy(
@@ -49,12 +48,18 @@ public class CalculateTermFrequencyActor extends AbstractActor {
 	
 	// list actors
 	ActorRef aggregate_tf = getContext().actorOf(AggregateCellList.props(), "agg_tf"); 
-	
+	ActorRef supervision_actor;
+
 	@Override
 	public Receive createReceive() {
 		return receiveBuilder()
 				.match(RequestCalculateMessage.class, msg->{
+					supervision_actor = getSender();
 					List<DocumentData> docs = msg.get_document_list().get_documents();
+
+					this.actual_messages = 0;
+					this.total_messages = docs.size();
+
 					docs.stream().forEach(d ->
 					{
 						routerTF.route(
@@ -63,10 +68,13 @@ public class CalculateTermFrequencyActor extends AbstractActor {
 					});
 				})
 				.match(CellListMessage.class, msg ->{
+					this.actual_messages++;
 					aggregate_tf.tell(msg, getSelf());
+					if ( this.actual_messages == this.total_messages )
+						aggregate_tf.tell(new ResultRequest(), getSelf());
 				})
-				.match(ResultRequest.class, msg-> {
-					aggregate_tf.forward(msg, getContext());
+				.match(TermFrequencyListData.class, msg-> {
+					supervision_actor.tell(msg, getSelf());
 				}).build();
 	}
 	

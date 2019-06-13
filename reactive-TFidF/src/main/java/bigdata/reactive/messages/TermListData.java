@@ -1,17 +1,18 @@
 package bigdata.reactive.messages;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Map;
 
 public class TermListData {
 
-	private final HashMap<String, Integer> terms_table;
+	private final Map<String, Integer> terms_table;
 
-	public TermListData(HashMap<String, Integer> terms_table) {
+	public TermListData(Map<String, Integer> terms_table) {
 		super();
-		this.terms_table = terms_table;
+		this.terms_table = Collections.unmodifiableMap(terms_table);
 	}
 	
-	public HashMap<String, Integer> get_terms_table (){ 
+	public Map<String, Integer> get_terms_table (){ 
 		return this.terms_table;
 	}
 	

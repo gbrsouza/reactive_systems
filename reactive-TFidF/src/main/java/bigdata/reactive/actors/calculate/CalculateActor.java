@@ -17,26 +17,26 @@ public class CalculateActor extends AbstractActor{
 	// Actor List
 	ActorRef term_frequency_actor = getContext().actorOf(CalculateTermFrequencyActor.props());
 	ActorRef inverse_distance_actor = getContext().actorOf(CalculateInverseDocumentActor.props());
-	
+
+	ActorRef supervision_actor;
+
 	@Override
 	public Receive createReceive() {
 		return receiveBuilder()
 				.match(RequestCalculateMessage.class, msg ->{
+					this.supervision_actor = getSender();
 					this.data = msg;
 					term_frequency_actor.tell(msg, getSelf());
-					this.wait(1000);
-					term_frequency_actor.tell(new ResultRequest(), getSelf());
 				})
 				.match(TermFrequencyListData.class, msg ->{
 					System.out.println(msg.getTable().size() + " cells in the term frequency table");
 					this.term_frequency = msg;
 					inverse_distance_actor.tell(data, getSelf());
-					this.wait(1000);
-					inverse_distance_actor.tell(new ResultRequest(), getSelf());
 				})
 				.match(InverseDocListMessage.class, msg ->{
 					System.out.println(msg.getInv_doc().size() + " cells in the inverse document table");
 					this.inverse_document = msg;
+					this.supervision_actor.tell(new ResultRequest(), getSelf());
 				})
 				.build();
 	}

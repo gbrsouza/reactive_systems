@@ -20,16 +20,16 @@ public class MasterActor extends AbstractActor{
 	ActorRef input_actor = getContext().actorOf(InputActor.props(), "input");
 	ActorRef construct_terms_actor = getContext().actorOf(ConstructTermsActor.props(), "constructor");
 	ActorRef calculator_actor = getContext().actorOf(CalculateActor.props(), "calculator");
-	
+
+	ActorRef supervision_actor;
 	
 	@Override
 	public Receive createReceive() {
 
 		return receiveBuilder()
 				.match(BootMessage.class, msg -> {
+					this.supervision_actor = getSender();
 					input_actor.tell(msg, getSelf());
-					this.wait(1000);
-					input_actor.tell(new ResultRequest(), getSelf());
 				})
 				.match(DocumentListData.class, msg ->{
 					System.out.println(msg.get_documents().size() + " documents successfully read");
@@ -39,6 +39,9 @@ public class MasterActor extends AbstractActor{
 				.match(TermListData.class, msg ->{
 					System.out.println(msg.get_terms_table().size() + " terms found");
 					calculator_actor.tell(new RequestCalculateMessage(documents, msg), getSelf());				
+				})
+				.match(ResultRequest.class, msg ->{
+					supervision_actor.tell(msg, getSelf());
 				})
 				.build();
 	}

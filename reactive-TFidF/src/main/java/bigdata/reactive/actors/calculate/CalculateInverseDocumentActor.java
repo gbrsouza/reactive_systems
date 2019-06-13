@@ -16,13 +16,13 @@ import akka.routing.ActorRefRoutee;
 import akka.routing.RoundRobinRoutingLogic;
 import akka.routing.Routee;
 import akka.routing.Router;
-import bigdata.reactive.messages.InverseDocumentData;
-import bigdata.reactive.messages.RequestCalculateMessage;
-import bigdata.reactive.messages.RequestInvDocMessage;
-import bigdata.reactive.messages.ResultRequest;
+import bigdata.reactive.messages.*;
 import scala.concurrent.duration.Duration;
 
 public class CalculateInverseDocumentActor extends AbstractActor {
+
+	private int total_messages;
+	private int actual_messages = 0;
 
 	// create supervisor strategy
 	final SupervisorStrategy routingSupervisorStrategy =
@@ -49,12 +49,17 @@ public class CalculateInverseDocumentActor extends AbstractActor {
 	
 	// actor List
 	ActorRef agg_inv_doc = getContext().actorOf(AggregateInverseDocument.props());
-	
+	ActorRef supervision_actor;
 	@Override
 	public Receive createReceive() {
 		return receiveBuilder()
 				.match(RequestCalculateMessage.class, msg->{
+					supervision_actor = getSender();
+
 					Set<String> terms = msg.term_list().get_terms_table().keySet();
+					this.actual_messages = 0;
+					this.total_messages = terms.size();
+
 					for ( String t : terms ) {
 						router.route(
 							new RequestInvDocMessage(t, msg.get_document_list()),
@@ -62,10 +67,13 @@ public class CalculateInverseDocumentActor extends AbstractActor {
 					}
 				})
 				.match(InverseDocumentData.class, msg->{
+					actual_messages++;
 					agg_inv_doc.tell(msg, getSelf());
+					if ( actual_messages == total_messages )
+						agg_inv_doc.tell(new ResultRequest(), getSelf());
 				})
-				.match(ResultRequest.class, msg ->{
-					agg_inv_doc.forward(msg, getContext());
+				.match(InverseDocListMessage.class, msg ->{
+					supervision_actor.tell(msg, getSelf());
 				})
 				.build();
 	}

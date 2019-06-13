@@ -5,6 +5,8 @@ import java.util.List;
 
 import akka.actor.*;
 import static akka.actor.SupervisorStrategy.*;
+
+import bigdata.reactive.messages.*;
 import scala.concurrent.duration.Duration;
 import akka.japi.pf.DeciderBuilder;
 import akka.actor.AbstractActor;
@@ -14,17 +16,13 @@ import akka.routing.ActorRefRoutee;
 import akka.routing.RoundRobinRoutingLogic;
 import akka.routing.Routee;
 import akka.routing.Router;
-import bigdata.reactive.messages.BootMessage;
-import bigdata.reactive.messages.DocumentData;
-import bigdata.reactive.messages.ReadDocumentMessage;
-import bigdata.reactive.messages.ResultRequest;
-import bigdata.reactive.messages.StopWordData;
-import bigdata.reactive.messages.UrlsDocumentsData;
 
 public class InputActor extends AbstractActor{
 
 	private StopWordData stop_words;
 	private BootMessage boot_message;
+	private int total_messages;
+	private int actual_messages = 0;
 	
 	// create actors to use
 	ActorRef stop_word_actor = getContext().actorOf(StopWordActor.props(), "stop_word");
@@ -56,7 +54,7 @@ public class InputActor extends AbstractActor{
 	
 	// aggregate the list of documents
 	ActorRef aggregate_actor = getContext().actorOf(AggregateDocumentActor.props(), "aggregate");
-	
+	ActorRef master_actor;
 	// principal method
 	@Override
 	public Receive createReceive() {
@@ -65,21 +63,26 @@ public class InputActor extends AbstractActor{
 				.match(BootMessage.class, msg-> {
 					this.boot_message = msg;
 					stop_word_actor.tell(msg.getUrl_stop_wordls(), getSelf());
+					master_actor = getSender();
 				})
 				.match(StopWordData.class, msg -> {
 					this.stop_words = msg;
 					read_links_actor.tell(boot_message.getUrl_documents(), getSelf());
 				})
 				.match(UrlsDocumentsData.class, msg->{
-					
+					this.actual_messages = 0;
+					this.total_messages = msg.getUrls().size();
 					for ( String s : msg.getUrls() ) 
 						router.route(new ReadDocumentMessage(s, this.stop_words), getSelf());
 				})
 			    .match(DocumentData.class, msg ->{
+			    	this.actual_messages++;
 					aggregate_actor.tell(msg, getSelf());			
-				})
-			    .match(ResultRequest.class, msg ->{
-			    	aggregate_actor.forward(msg, getContext());
+					if ( this.actual_messages == this.total_messages )
+						aggregate_actor.tell(new ResultRequest(), getSelf());
+			    })
+			    .match(DocumentListData.class, msg ->{
+			    	master_actor.tell(msg, getSelf());
 			    }).build(); 
 	}
 	

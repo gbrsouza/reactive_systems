@@ -6,11 +6,7 @@ import akka.actor.Props;
 import bigdata.reactive.actors.calculate.CalculateActor;
 import bigdata.reactive.actors.input.InputActor;
 import bigdata.reactive.actors.tokenizer.ConstructTermsActor;
-import bigdata.reactive.messages.BootMessage;
-import bigdata.reactive.messages.DocumentListData;
-import bigdata.reactive.messages.RequestCalculateMessage;
-import bigdata.reactive.messages.ResultRequest;
-import bigdata.reactive.messages.TermListData;
+import bigdata.reactive.messages.*;
 
 public class MasterActor extends AbstractActor{
 
@@ -40,18 +36,10 @@ public class MasterActor extends AbstractActor{
 					System.out.println(msg.get_terms_table().size() + " terms found");
 					calculator_actor.tell(new RequestCalculateMessage(documents, msg), getSelf());				
 				})
-				.match(ResultRequest.class, msg ->{
-					supervision_actor.tell(msg, getSelf());
+				.match(TableData.class, msg ->{
+					supervision_actor.tell(new ResultRequest(), getSelf());
 				})
 				.build();
-	}
-	
-	private void wait (int ms) {
-		try {
-			Thread.sleep(ms);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public static Props props () {

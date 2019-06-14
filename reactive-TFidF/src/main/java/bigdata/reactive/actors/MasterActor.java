@@ -37,6 +37,7 @@ public class MasterActor extends AbstractActor{
 					calculator_actor.tell(new RequestCalculateMessage(documents, msg), getSelf());				
 				})
 				.match(TableData.class, msg ->{
+					System.out.println(msg.getTable().size() + " cells in tfidf table");
 					supervision_actor.tell(new ResultRequest(), getSelf());
 				})
 				.build();

@@ -12,6 +12,8 @@ import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,6 +46,8 @@ public class App
         long totalTime = endTime - startTime;
         long durationInMs = TimeUnit.NANOSECONDS.toMillis(totalTime);
         System.out.println("total run time: " + durationInMs + " ms");
+        if ( master.isTerminated()) System.out.println("terminou");
+        else System.out.println("não terminou");
 	}
 	
     public static void main( String[] args )
@@ -52,5 +56,12 @@ public class App
     		execute();
     	}
 
+//		CellMultiTable c = new CellMultiTable("doc1", "casa", 1.0);
+//		Map<CellMultiTable, Integer> map = new HashMap<>();
+////		System.out.println("adicionando a chave " + c.hashCode());
+//		map.put(c,1);
+//		CellMultiTable c2 = new CellMultiTable("doc1", "casa", 0.0);
+////		System.out.println("procurando a chave " + c2.hashCode());
+//		if ( map.containsKey(c2) )  System.out.println("deu certo");
     }
 }

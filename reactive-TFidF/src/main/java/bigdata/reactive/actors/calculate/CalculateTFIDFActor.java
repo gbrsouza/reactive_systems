@@ -9,9 +9,7 @@ import akka.routing.Router;
 import bigdata.reactive.messages.*;
 import scala.concurrent.duration.Duration;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +70,8 @@ public class CalculateTFIDFActor extends AbstractActor {
 					if ( actual_messages == total_messages )
 						aggregate_tfidf.tell(new ResultRequest(), getSelf());
 				}).match(TableData.class, msg->{
-					supervisor_actor.tell(msg, getSelf());
+					System.out.println("recebi " + msg.getTable().size() + " cells");
+					supervisor_actor.tell(new TFIDFDataMessage(msg), getSelf());
 				})
 				.build();
 	}

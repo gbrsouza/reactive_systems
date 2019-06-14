@@ -83,7 +83,8 @@ public class InputActor extends AbstractActor{
 			    })
 			    .match(DocumentListData.class, msg ->{
 			    	master_actor.tell(msg, getSelf());
-			    }).build(); 
+			    })
+				.build();
 	}
 	
 	/**

@@ -38,6 +38,7 @@ public class App
         Future<Object> future = Patterns.ask(master, new BootMessage(urls_documents, stop_words),timeout );
         try {
 			Object result =  Await.result(future, Duration.create("2 seconds"));
+			system.terminate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,12 +48,12 @@ public class App
         long durationInMs = TimeUnit.NANOSECONDS.toMillis(totalTime);
         System.out.println("total run time: " + durationInMs + " ms");
         if ( master.isTerminated()) System.out.println("terminou");
-        else System.out.println("não terminou");
+		else System.out.println("não terminou");
 	}
 	
     public static void main( String[] args )
     {
-    	for (int i = 0; i < 1; i++) {
+    	for (int i = 0; i < 30; i++) {
     		execute();
     	}
 

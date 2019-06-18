@@ -7,7 +7,7 @@ import akka.actor.Props;
 import bigdata.reactive.CellMultiTable;
 import bigdata.reactive.messages.CellListMessage;
 import bigdata.reactive.messages.ResultRequest;
-import bigdata.reactive.messages.TermFrequencyListData;
+import bigdata.reactive.messages.TableData;
 
 public class AggregateCellList extends AbstractActor {
 
@@ -22,7 +22,7 @@ public class AggregateCellList extends AbstractActor {
 						{ table.put(cell, 1); });
 				})
 				.match(ResultRequest.class, msg->{
-					getSender().tell(new TermFrequencyListData(table), getSelf());
+					getSender().tell(new TableData(table), getSelf());
 				}).build();
 	}
 	

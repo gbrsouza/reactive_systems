@@ -73,7 +73,7 @@ public class CalculateTermFrequencyActor extends AbstractActor {
 					if ( this.actual_messages == this.total_messages )
 						aggregate_tf.tell(new ResultRequest(), getSelf());
 				})
-				.match(TermFrequencyListData.class, msg-> {
+				.match(TableData.class, msg-> {
 					supervision_actor.tell(msg, getSelf());
 				}).build();
 	}

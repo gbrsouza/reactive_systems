@@ -12,6 +12,8 @@ import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,7 +27,7 @@ public class App
 	private static void execute () {
 		String stop_words = "../reactive-TFidF/files/stopWords.in";
 	    String urls_documents = "../reactive-TFidF/files/forRead.txt";
-		Timeout timeout = new Timeout((FiniteDuration) Duration.create("2 seconds"));
+		Timeout timeout = new Timeout((FiniteDuration) Duration.create("5 seconds"));
         System.out.println( "Hello World!" );
 		
 		ActorSystem system = ActorSystem.create("tfIdfSystem");
@@ -35,7 +37,8 @@ public class App
 
         Future<Object> future = Patterns.ask(master, new BootMessage(urls_documents, stop_words),timeout );
         try {
-			Object result =  Await.result(future, Duration.create("2 seconds"));
+			Object result =  Await.result(future, Duration.create("5 seconds"));
+			system.terminate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,13 +47,13 @@ public class App
         long totalTime = endTime - startTime;
         long durationInMs = TimeUnit.NANOSECONDS.toMillis(totalTime);
         System.out.println("total run time: " + durationInMs + " ms");
+        
 	}
 	
     public static void main( String[] args )
     {
-    	for (int i = 0; i < 10; i++) {
+    	for (int i = 0; i < 30; i++) {
     		execute();
     	}
-
     }
 }

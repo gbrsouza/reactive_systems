@@ -6,16 +6,13 @@ import java.util.List;
 import akka.actor.*;
 import static akka.actor.SupervisorStrategy.*;
 
+import akka.routing.*;
 import bigdata.reactive.messages.*;
 import scala.concurrent.duration.Duration;
 import akka.japi.pf.DeciderBuilder;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import akka.routing.ActorRefRoutee;
-import akka.routing.RoundRobinRoutingLogic;
-import akka.routing.Routee;
-import akka.routing.Router;
 
 public class InputActor extends AbstractActor{
 
@@ -26,6 +23,7 @@ public class InputActor extends AbstractActor{
 	
 	// create actors to use
 	ActorRef stop_word_actor = getContext().actorOf(StopWordActor.props(), "stop_word");
+
 	ActorRef read_links_actor = getContext().actorOf(ReadLinksActor.props(), "read_links");
 	
 	// create supervisor strategy
@@ -45,13 +43,13 @@ public class InputActor extends AbstractActor{
 		List<Routee> routees = new ArrayList<Routee>();
 		for (int i = 0; i < 10; i++) {
 	    	ActorRef r = getContext().actorOf(Props.create(ReadDocumentActor.class));
-	    	getContext().watch(r);
+	    	this.getContext().watch(r);
 	    	routees.add(new ActorRefRoutee(r));
 	    }
 	    router = new Router(new RoundRobinRoutingLogic(), routees);
 	       
 	}
-	
+
 	// aggregate the list of documents
 	ActorRef aggregate_actor = getContext().actorOf(AggregateDocumentActor.props(), "aggregate");
 	ActorRef master_actor;
@@ -62,28 +60,40 @@ public class InputActor extends AbstractActor{
 		return receiveBuilder()
 				.match(BootMessage.class, msg-> {
 					this.boot_message = msg;
+
 					stop_word_actor.tell(msg.getUrl_stop_wordls(), getSelf());
 					master_actor = getSender();
+
 				})
 				.match(StopWordData.class, msg -> {
+
 					this.stop_words = msg;
 					read_links_actor.tell(boot_message.getUrl_documents(), getSelf());
 				})
 				.match(UrlsDocumentsData.class, msg->{
+
 					this.actual_messages = 0;
 					this.total_messages = msg.getUrls().size();
 					for ( String s : msg.getUrls() ) 
 						router.route(new ReadDocumentMessage(s, this.stop_words), getSelf());
 				})
 			    .match(DocumentData.class, msg ->{
+
 			    	this.actual_messages++;
 					aggregate_actor.tell(msg, getSelf());			
 					if ( this.actual_messages == this.total_messages )
 						aggregate_actor.tell(new ResultRequest(), getSelf());
 			    })
 			    .match(DocumentListData.class, msg ->{
+					if ( getSender().isTerminated()) System.out.println("terminou");
+					else System.out.println("não terminou");
 			    	master_actor.tell(msg, getSelf());
-			    }).build(); 
+			    })
+				.match(Terminated.class, msg ->{
+					System.out.println("um actor terminou" + msg.actor());
+					getContext().stop(msg.actor());
+				})
+				.build();
 	}
 	
 	/**

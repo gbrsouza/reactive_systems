@@ -6,11 +6,11 @@ import java.util.Map;
 
 import bigdata.reactive.CellMultiTable;
 
-public class TermFrequencyListData {
+public class TableData {
 
 	private final Map<CellMultiTable, Integer> table;
 
-	public TermFrequencyListData(HashMap<CellMultiTable, Integer> table) {
+	public TableData(HashMap<CellMultiTable, Integer> table) {
 		super();
 		this.table = Collections.unmodifiableMap(table);
 	}

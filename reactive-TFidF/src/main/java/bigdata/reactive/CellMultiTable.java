@@ -30,6 +30,14 @@ public class CellMultiTable {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		return o.hashCode() == this.hashCode();
+	}
+
+	@Override
 	public int hashCode() {
 		return this.toString().hashCode();
 	}

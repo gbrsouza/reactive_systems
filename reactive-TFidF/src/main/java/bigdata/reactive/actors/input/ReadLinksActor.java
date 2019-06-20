@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import bigdata.reactive.messages.UrlsDocumentsData;
+import bigdata.reactive.messages.data.UrlsDocumentsData;
 
 public class ReadLinksActor extends AbstractActor {
 

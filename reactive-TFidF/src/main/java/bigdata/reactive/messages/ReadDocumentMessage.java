@@ -1,5 +1,7 @@
 package bigdata.reactive.messages;
 
+import bigdata.reactive.messages.data.StopWordData;
+
 public class ReadDocumentMessage {
 
 	private final String url_document;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import bigdata.reactive.messages.StopWordData;
+import bigdata.reactive.messages.data.StopWordData;
 
 public class StopWordActor extends AbstractActor{
 

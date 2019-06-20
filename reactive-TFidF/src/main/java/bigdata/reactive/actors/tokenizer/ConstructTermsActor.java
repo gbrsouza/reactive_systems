@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import bigdata.reactive.messages.DocumentData;
-import bigdata.reactive.messages.DocumentListData;
-import bigdata.reactive.messages.TermListData;
+import bigdata.reactive.messages.data.DocumentData;
+import bigdata.reactive.messages.data.DocumentListData;
+import bigdata.reactive.messages.data.TermListData;
 
 public class ConstructTermsActor extends AbstractActor {
 

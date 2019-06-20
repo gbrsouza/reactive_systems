@@ -5,8 +5,8 @@ import java.util.HashMap;
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import bigdata.reactive.messages.InverseDocListMessage;
-import bigdata.reactive.messages.InverseDocumentData;
-import bigdata.reactive.messages.ResultRequest;
+import bigdata.reactive.messages.data.InverseDocumentData;
+import bigdata.reactive.messages.requests.ResultRequest;
 
 public class AggregateInverseDocument extends AbstractActor {
 	

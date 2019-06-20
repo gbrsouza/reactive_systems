@@ -8,6 +8,11 @@ import static akka.actor.SupervisorStrategy.*;
 
 import akka.routing.*;
 import bigdata.reactive.messages.*;
+import bigdata.reactive.messages.data.DocumentData;
+import bigdata.reactive.messages.data.DocumentListData;
+import bigdata.reactive.messages.data.StopWordData;
+import bigdata.reactive.messages.data.UrlsDocumentsData;
+import bigdata.reactive.messages.requests.ResultRequest;
 import scala.concurrent.duration.Duration;
 import akka.japi.pf.DeciderBuilder;
 import akka.actor.AbstractActor;

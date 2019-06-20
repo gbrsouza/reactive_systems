@@ -3,7 +3,14 @@ package bigdata.reactive.actors.calculate;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import bigdata.reactive.actors.calculate.leafs.CalculateInverseDocumentActor;
+import bigdata.reactive.actors.calculate.leafs.CalculateTFIDFActor;
+import bigdata.reactive.actors.calculate.leafs.CalculateTermFrequencyActor;
 import bigdata.reactive.messages.*;
+import bigdata.reactive.messages.data.TFIDFDataMessage;
+import bigdata.reactive.messages.data.TableData;
+import bigdata.reactive.messages.requests.RequestCalculateMessage;
+import bigdata.reactive.messages.requests.RequestCalculatorTFIDFMessage;
 
 public class CalculateActor extends AbstractActor{
 

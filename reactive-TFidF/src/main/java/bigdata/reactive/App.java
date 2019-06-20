@@ -6,14 +6,11 @@ import akka.pattern.Patterns;
 import akka.util.Timeout;
 import bigdata.reactive.actors.MasterActor;
 import bigdata.reactive.messages.BootMessage;
-import bigdata.reactive.messages.StopWordData;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,7 +34,7 @@ public class App
 
         Future<Object> future = Patterns.ask(master, new BootMessage(urls_documents, stop_words),timeout );
         try {
-			Object result =  Await.result(future, Duration.create("5 seconds"));
+			Await.result(future, Duration.create("5 seconds"));
 			system.terminate();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -16,6 +16,6 @@
 
 ### How to use
 
-1. Import the project to a IDE java with Maven project
+1. Import the project to a IDE java as Maven project
 2. access **App.java** in **bigdata.reactive** and run as Java project
 3. The application use a default dataset of files

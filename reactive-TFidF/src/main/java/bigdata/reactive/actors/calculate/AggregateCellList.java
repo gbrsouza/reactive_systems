@@ -6,8 +6,8 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import bigdata.reactive.CellMultiTable;
 import bigdata.reactive.messages.CellListMessage;
-import bigdata.reactive.messages.ResultRequest;
-import bigdata.reactive.messages.TableData;
+import bigdata.reactive.messages.data.TableData;
+import bigdata.reactive.messages.requests.ResultRequest;
 
 public class AggregateCellList extends AbstractActor {
 

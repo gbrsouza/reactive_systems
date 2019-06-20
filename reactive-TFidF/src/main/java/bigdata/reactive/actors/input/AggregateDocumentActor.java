@@ -1,9 +1,9 @@
 package bigdata.reactive.actors.input;
 
 import akka.actor.Props;
-import bigdata.reactive.messages.DocumentData;
-import bigdata.reactive.messages.DocumentListData;
-import bigdata.reactive.messages.ResultRequest;
+import bigdata.reactive.messages.data.DocumentData;
+import bigdata.reactive.messages.data.DocumentListData;
+import bigdata.reactive.messages.requests.ResultRequest;
 
 import java.util.ArrayList;
 

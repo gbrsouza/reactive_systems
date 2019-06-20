@@ -1,4 +1,4 @@
-package bigdata.reactive.messages;
+package bigdata.reactive.messages.data;
 
 import java.util.Collections;
 import java.util.HashMap;

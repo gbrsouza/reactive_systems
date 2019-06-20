@@ -1,11 +1,11 @@
-package bigdata.reactive.actors.calculate;
+package bigdata.reactive.actors.calculate.supervisors;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import bigdata.reactive.CellMultiTable;
 import bigdata.reactive.messages.CellListMessage;
-import bigdata.reactive.messages.DocumentData;
-import bigdata.reactive.messages.RequestTFIDFMessage;
+import bigdata.reactive.messages.data.DocumentData;
+import bigdata.reactive.messages.requests.RequestTFIDFMessage;
 
 import java.util.ArrayList;
 import java.util.List;

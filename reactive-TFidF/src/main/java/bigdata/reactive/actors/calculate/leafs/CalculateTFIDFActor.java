@@ -1,4 +1,4 @@
-package bigdata.reactive.actors.calculate;
+package bigdata.reactive.actors.calculate.leafs;
 
 import akka.actor.*;
 import akka.japi.pf.DeciderBuilder;
@@ -6,7 +6,14 @@ import akka.routing.ActorRefRoutee;
 import akka.routing.RoundRobinRoutingLogic;
 import akka.routing.Routee;
 import akka.routing.Router;
+import bigdata.reactive.actors.calculate.AggregateCellList;
+import bigdata.reactive.actors.calculate.supervisors.TFIDFActor;
 import bigdata.reactive.messages.*;
+import bigdata.reactive.messages.data.TFIDFDataMessage;
+import bigdata.reactive.messages.data.TableData;
+import bigdata.reactive.messages.requests.RequestCalculatorTFIDFMessage;
+import bigdata.reactive.messages.requests.RequestTFIDFMessage;
+import bigdata.reactive.messages.requests.ResultRequest;
 import scala.concurrent.duration.Duration;
 
 import java.util.ArrayList;

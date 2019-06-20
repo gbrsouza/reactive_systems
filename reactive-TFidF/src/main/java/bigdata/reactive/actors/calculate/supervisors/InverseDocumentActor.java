@@ -1,13 +1,13 @@
-package bigdata.reactive.actors.calculate;
+package bigdata.reactive.actors.calculate.supervisors;
 
 
 import java.util.List;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import bigdata.reactive.messages.DocumentData;
-import bigdata.reactive.messages.InverseDocumentData;
-import bigdata.reactive.messages.RequestInvDocMessage;
+import bigdata.reactive.messages.data.DocumentData;
+import bigdata.reactive.messages.data.InverseDocumentData;
+import bigdata.reactive.messages.requests.RequestInvDocMessage;
 
 public class InverseDocumentActor extends AbstractActor{
 

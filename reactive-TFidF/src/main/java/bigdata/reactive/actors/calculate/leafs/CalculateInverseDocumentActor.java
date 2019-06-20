@@ -1,4 +1,4 @@
-package bigdata.reactive.actors.calculate;
+package bigdata.reactive.actors.calculate.leafs;
 
 import static akka.actor.SupervisorStrategy.restart;
 
@@ -16,7 +16,13 @@ import akka.routing.ActorRefRoutee;
 import akka.routing.RoundRobinRoutingLogic;
 import akka.routing.Routee;
 import akka.routing.Router;
+import bigdata.reactive.actors.calculate.AggregateInverseDocument;
+import bigdata.reactive.actors.calculate.supervisors.InverseDocumentActor;
 import bigdata.reactive.messages.*;
+import bigdata.reactive.messages.data.InverseDocumentData;
+import bigdata.reactive.messages.requests.RequestCalculateMessage;
+import bigdata.reactive.messages.requests.RequestInvDocMessage;
+import bigdata.reactive.messages.requests.ResultRequest;
 import scala.concurrent.duration.Duration;
 
 public class CalculateInverseDocumentActor extends AbstractActor {

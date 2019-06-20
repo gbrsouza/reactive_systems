@@ -7,6 +7,11 @@ import bigdata.reactive.actors.calculate.CalculateActor;
 import bigdata.reactive.actors.input.InputActor;
 import bigdata.reactive.actors.tokenizer.ConstructTermsActor;
 import bigdata.reactive.messages.*;
+import bigdata.reactive.messages.data.DocumentListData;
+import bigdata.reactive.messages.data.TableData;
+import bigdata.reactive.messages.data.TermListData;
+import bigdata.reactive.messages.requests.RequestCalculateMessage;
+import bigdata.reactive.messages.requests.ResultRequest;
 
 public class MasterActor extends AbstractActor{
 

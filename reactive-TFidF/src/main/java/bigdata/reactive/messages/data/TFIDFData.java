@@ -1,8 +1,7 @@
-package bigdata.reactive.messages;
+package bigdata.reactive.messages.data;
 
 import bigdata.reactive.CellMultiTable;
 
-import java.util.Map;
 
 public class TFIDFData {
 

@@ -1,4 +1,4 @@
-package bigdata.reactive.actors.calculate;
+package bigdata.reactive.actors.calculate.leafs;
 
 import static akka.actor.SupervisorStrategy.restart;
 
@@ -15,7 +15,14 @@ import akka.routing.ActorRefRoutee;
 import akka.routing.RoundRobinRoutingLogic;
 import akka.routing.Routee;
 import akka.routing.Router;
+import bigdata.reactive.actors.calculate.AggregateCellList;
+import bigdata.reactive.actors.calculate.supervisors.TermFrequencyActor;
 import bigdata.reactive.messages.*;
+import bigdata.reactive.messages.data.DocumentData;
+import bigdata.reactive.messages.data.TableData;
+import bigdata.reactive.messages.requests.RequestCalculateMessage;
+import bigdata.reactive.messages.requests.RequestTermFrequencyMessage;
+import bigdata.reactive.messages.requests.ResultRequest;
 import scala.concurrent.duration.Duration;
 
 public class CalculateTermFrequencyActor extends AbstractActor {

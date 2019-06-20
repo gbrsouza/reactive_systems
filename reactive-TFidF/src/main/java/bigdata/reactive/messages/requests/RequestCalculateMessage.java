@@ -1,4 +1,7 @@
-package bigdata.reactive.messages;
+package bigdata.reactive.messages.requests;
+
+import bigdata.reactive.messages.data.DocumentListData;
+import bigdata.reactive.messages.data.TermListData;
 
 public class RequestCalculateMessage {
 

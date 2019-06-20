@@ -1,4 +1,4 @@
-package bigdata.reactive.messages;
+package bigdata.reactive.messages.data;
 
 public class TFIDFDataMessage {
 

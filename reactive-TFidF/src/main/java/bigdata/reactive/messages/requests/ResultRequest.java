@@ -1,4 +1,4 @@
-package bigdata.reactive.messages;
+package bigdata.reactive.messages.requests;
 
 public class ResultRequest {
 

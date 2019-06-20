@@ -1,6 +1,7 @@
-package bigdata.reactive.messages;
+package bigdata.reactive.messages.requests;
 
 import bigdata.reactive.CellMultiTable;
+import bigdata.reactive.messages.data.DocumentData;
 
 import java.util.List;
 import java.util.Map;

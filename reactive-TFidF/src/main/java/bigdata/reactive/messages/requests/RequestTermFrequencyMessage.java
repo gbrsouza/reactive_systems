@@ -1,6 +1,9 @@
-package bigdata.reactive.messages;
+package bigdata.reactive.messages.requests;
 
 import java.util.Map;
+
+import bigdata.reactive.messages.data.DocumentData;
+import bigdata.reactive.messages.data.TermListData;
 
 public class RequestTermFrequencyMessage {
 

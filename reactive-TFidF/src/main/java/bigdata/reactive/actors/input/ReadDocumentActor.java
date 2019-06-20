@@ -9,8 +9,8 @@ import java.util.List;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import bigdata.reactive.messages.DocumentData;
 import bigdata.reactive.messages.ReadDocumentMessage;
+import bigdata.reactive.messages.data.DocumentData;
 
 public class ReadDocumentActor extends AbstractActor {
 

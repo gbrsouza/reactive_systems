@@ -1,4 +1,4 @@
-package bigdata.reactive.actors.calculate;
+package bigdata.reactive.actors.calculate.supervisors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import bigdata.reactive.CellMultiTable;
 import bigdata.reactive.messages.CellListMessage;
-import bigdata.reactive.messages.RequestTermFrequencyMessage;
+import bigdata.reactive.messages.requests.RequestTermFrequencyMessage;
 
 public class TermFrequencyActor extends AbstractActor {
 

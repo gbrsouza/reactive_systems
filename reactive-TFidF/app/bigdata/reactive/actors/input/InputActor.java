@@ -90,8 +90,6 @@ public class InputActor extends AbstractActor{
 						aggregate_actor.tell(new ResultRequest(), getSelf());
 			    })
 			    .match(DocumentListData.class, msg ->{
-					if ( getSender().isTerminated()) System.out.println("terminou");
-					else System.out.println("não terminou");
 			    	master_actor.tell(msg, getSelf());
 			    })
 				.match(Terminated.class, msg ->{

@@ -3,7 +3,7 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                     controllers.HomeController.index()
+GET     /                     bigdata.reactive.controllers.HomeController.index()
 #GET     /hello                controllers.HomeController.sayHello()
 #GET     /hi/*name             controllers.HomeController.sayHi(name)
 

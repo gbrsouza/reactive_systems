@@ -10,12 +10,12 @@ import java.util.Map;
 public class RequestCalculatorTFIDFMessage {
 
     private final Map<String, Double> inv_doc_list;
-    private final Map<CellMultiTable, Integer> term_frequency_list;
+    private final Map<CellMultiTable, Double> term_frequency_list;
     private final List<DocumentData> document_list;
     private final Map<String, Integer> terms_list;
 
     public RequestCalculatorTFIDFMessage(Map<String, Double> inv_doc_list,
-                                         Map<CellMultiTable, Integer> term_frequency_list,
+                                         Map<CellMultiTable, Double> term_frequency_list,
                                          List<DocumentData> document_list,
                                          Map<String, Integer> terms_list)
     {
@@ -29,7 +29,7 @@ public class RequestCalculatorTFIDFMessage {
         return inv_doc_list;
     }
 
-    public Map<CellMultiTable, Integer> getTerm_frequency_list() {
+    public Map<CellMultiTable, Double> getTerm_frequency_list() {
         return term_frequency_list;
     }
 

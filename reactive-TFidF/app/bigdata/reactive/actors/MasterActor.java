@@ -3,6 +3,7 @@ package bigdata.reactive.actors;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import bigdata.reactive.DbActor;
 import bigdata.reactive.actors.calculate.CalculateActor;
 import bigdata.reactive.actors.input.InputActor;
 import bigdata.reactive.actors.tokenizer.ConstructTermsActor;
@@ -21,7 +22,8 @@ public class MasterActor extends AbstractActor{
 	ActorRef input_actor = getContext().actorOf(InputActor.props(), "input");
 	ActorRef construct_terms_actor = getContext().actorOf(ConstructTermsActor.props(), "constructor");
 	ActorRef calculator_actor = getContext().actorOf(CalculateActor.props(), "calculator");
-
+	ActorRef db_actor = getContext().actorOf(DbActor.props(), "db");
+	
 	ActorRef supervision_actor;
 	
 	@Override
@@ -43,7 +45,10 @@ public class MasterActor extends AbstractActor{
 				})
 				.match(TableData.class, msg ->{
 					System.out.println(msg.getTable().size() + " cells in tfidf table");
-					supervision_actor.tell(new ResultRequest(), getSelf());
+					db_actor.tell(msg, getSelf());
+				})
+				.match(ResultRequest.class, msg -> {
+					supervision_actor.tell(msg, getSelf());
 				})
 				.build();
 	}

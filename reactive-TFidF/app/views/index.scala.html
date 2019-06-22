@@ -1,0 +1,8 @@
+@(form : Form[DocumentsFile])
+		
+@main("Reactive TF-idF"){
+	@helper.form(helper.CSRF(routes.HomeController.getResult), 'id -> "myForm") {
+		@helper.inputText(form("url"))
+		<input type="submit" value="Send"></input>
+	}
+}

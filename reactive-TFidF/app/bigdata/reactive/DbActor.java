@@ -11,7 +11,6 @@ import com.datastax.driver.core.Session;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import bigdata.reactive.messages.CellListMessage;
 import bigdata.reactive.messages.InverseDocListMessage;
 import bigdata.reactive.messages.data.TableData;
 import bigdata.reactive.messages.requests.ResultRequest;

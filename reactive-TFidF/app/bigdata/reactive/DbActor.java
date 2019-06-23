@@ -1,6 +1,8 @@
 package bigdata.reactive;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Metadata;
@@ -13,7 +15,10 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import bigdata.reactive.messages.InverseDocListMessage;
 import bigdata.reactive.messages.data.TableData;
+import bigdata.reactive.messages.requests.RequestQuery;
+import bigdata.reactive.messages.requests.RequestQueryByTerm;
 import bigdata.reactive.messages.requests.ResultRequest;
+import models.CellTFidF;
 
 public class DbActor extends AbstractActor {
 
@@ -39,6 +44,33 @@ public class DbActor extends AbstractActor {
         }
         return line;
     }
+	
+	private List<CellTFidF> queryTFidFList (String command){
+		System.out.println("running the command " + command);
+		ResultSet results = session.execute(command);
+		List<CellTFidF> res = new ArrayList<CellTFidF>();
+		
+		for (Iterator<Row> it = results.iterator(); it.hasNext();) {
+			Row row = it.next();
+			res.add(new CellTFidF(row.getString("document_name"),
+					row.getString("term_name"), 
+					row.getDouble("value")));
+			
+		}
+		
+		return res;
+	}
+	
+	
+	private String getCommandQueryByTerm (RequestQueryByTerm request) {
+		return "SELECT * FROM tfidf WHERE term_name='" 
+				+ request.getTerm() 
+				+ "' ALLOW FILTERING;";
+	}
+	
+	private String getCommandQueryAll () {
+		return "SELECT * FROM tfidf limit 50;";
+	}
 	
 	private ResultRequest insertTFidf (TableData list) {
 		
@@ -84,6 +116,12 @@ public class DbActor extends AbstractActor {
 				})
 				.match(InverseDocListMessage.class, msg -> {
 					getSender().tell(insertInvDoc(msg), getSelf());
+				})
+				.match(RequestQuery.class, msg -> {
+					getSender().tell(queryTFidFList(this.getCommandQueryAll()), getSelf());
+				})
+				.match(RequestQueryByTerm.class, msg->{
+					getSender().tell(queryTFidFList(this.getCommandQueryByTerm(msg)), getSelf());
 				})
 				.build();
 	}

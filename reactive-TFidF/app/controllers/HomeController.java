@@ -5,9 +5,10 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
+import bigdata.reactive.DbActor;
 import bigdata.reactive.actors.MasterActor;
 import bigdata.reactive.messages.BootMessage;
-import models.DocumentsFile;
+import bigdata.reactive.messages.requests.RequestQuery;
 import scala.compat.java8.FutureConverters;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
@@ -15,11 +16,12 @@ import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 import play.mvc.*;
 import play.twirl.api.Html;
-
+import models.*;
 
 import javax.inject.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 
@@ -32,12 +34,12 @@ import javax.inject.Inject;
 
 public class HomeController extends Controller{
 	
-	final ActorSystem system = ActorSystem.create("reactive-tfidf");
-	final ActorRef master = system.actorOf(MasterActor.props(), "master");
+//	final ActorRef master = system.actorOf(MasterActor.props(), "master");
+
 	
 	String stop_words = "../reactive-TFidF/files/stopWords.in";
     //String urls_documents = "	";
-	Timeout timeout = new Timeout((FiniteDuration) Duration.create("5 seconds"));
+	Timeout timeout = new Timeout((FiniteDuration) Duration.create("100 seconds"));
 	
 	private final Form<DocumentsFile> form;
 	
@@ -51,10 +53,25 @@ public class HomeController extends Controller{
 	}
 
 	public Result getResult(Http.Request request) {
+		
+		ActorSystem system = ActorSystem.create("reactive-tfidf");
+		ActorRef db = system.actorOf(DbActor.props());
+		
 		DocumentsFile obj = form.bindFromRequest(request).get();
 		double time = this.execute(obj.getUrl());
 		//return ok(views.html.result.render("Success - read and process " + obj.getUrl() + " in " + time + " ms" ));
-		return ok(views.html.result.render(new ArrayList<>()));
+		List<CellTFidF> res = new ArrayList<CellTFidF>();
+		
+		Future<Object> future = Patterns.ask(db, new RequestQuery(),timeout );
+	    try {
+	    	List<CellTFidF> result = (List<CellTFidF>) Await.result(future, Duration.create("100 seconds"));
+			res = result;
+			system.terminate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+	    return ok(views.html.result.render(res));
 	}
 	
 	private double execute (String urls_documents) {

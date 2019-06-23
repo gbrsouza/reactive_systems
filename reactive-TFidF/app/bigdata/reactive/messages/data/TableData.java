@@ -8,14 +8,14 @@ import bigdata.reactive.CellMultiTable;
 
 public class TableData {
 
-	private final Map<CellMultiTable, Integer> table;
+	private final Map<CellMultiTable, Double> table;
 
-	public TableData(HashMap<CellMultiTable, Integer> table) {
+	public TableData(HashMap<CellMultiTable, Double> table) {
 		super();
 		this.table = Collections.unmodifiableMap(table);
 	}
 
-	public Map<CellMultiTable, Integer> getTable() {
+	public Map<CellMultiTable, Double> getTable() {
 		return table;
 	}
 	

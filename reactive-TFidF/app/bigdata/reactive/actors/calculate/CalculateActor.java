@@ -23,6 +23,7 @@ public class CalculateActor extends AbstractActor{
 	ActorRef inverse_distance_actor = getContext().actorOf(CalculateInverseDocumentActor.props());
 	ActorRef tfidf_actor = getContext().actorOf(CalculateTFIDFActor.props());
 
+	
 	ActorRef supervision_actor;
 
 	@Override

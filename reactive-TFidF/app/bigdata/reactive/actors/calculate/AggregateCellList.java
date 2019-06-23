@@ -11,7 +11,7 @@ import bigdata.reactive.messages.requests.ResultRequest;
 
 public class AggregateCellList extends AbstractActor {
 
-	private HashMap<CellMultiTable, Integer> table = new HashMap<>();
+	private HashMap<CellMultiTable, Double> table = new HashMap<>();
 
 	@Override
 	public Receive createReceive() {
@@ -19,7 +19,7 @@ public class AggregateCellList extends AbstractActor {
 				.match(CellListMessage.class, msg->{
 					msg.getCells().stream()
 						.forEach( cell -> 
-						{ table.put(cell, 1); });
+						{ table.put(cell, cell.getValue()); });
 				})
 				.match(ResultRequest.class, msg->{
 					getSender().tell(new TableData(table), getSelf());

@@ -1,17 +1,8 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
 # An example controller showing a sample home page
-GET     /                     controllers.HomeController.index()
-#GET     /hello                controllers.HomeController.sayHello()
-#GET     /hi/*name             controllers.HomeController.sayHi(name)
+GET   /         controllers.HomeController.index
+GET   /search   controllers.SearchController.index
+GET   /result   controllers.HomeController.getResult(request: Request)
+GET   /search/result   controllers.SearchController.getSearchTerm(request: Request)
 
-## Uncomment the route below for running without Cassandra
-#GET     /requestinfo/*name    controllers.HomeController.requestUser(name)
-
-# Example of supervision+routing
-#GET     /selectall            controllers.MasterController.selectAll()
-
-# Spark test
-#GET	/spark		      controllers.HomeController.sparkHello()
+# Map static resources from the /public folder to the /assets URL path
+GET /assets/*file controllers.Assets.versioned(path="/public", file: Asset)

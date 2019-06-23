@@ -1,0 +1,29 @@
+@(tfidf: List[CellTFidF])
+
+ 
+@main("TF-idFs encontrados"){
+  
+  <a href="@routes.SearchController.index">Realizar uma Busca</a>
+  
+  @if(tfidf.isEmpty){
+    <h3>Não há valores de TFidFprocessados</h3>
+  } else {
+    <h3>TF-idFs encontrados:</h3>
+    <table>
+      <tr>
+        <th>termo</th>
+        <th>documento</th>
+        <th>valor</th>
+      </tr>
+    @for(tf <- tfidf){
+      <tr>
+        <td>@tf.getTerm</td>
+        <td>@tf.getUrl_document</td>
+        <td>@tf.getValue</td>
+      </tr>
+    }
+    </table>
+  }
+  <hr>
+  <a href="@routes.HomeController.index">Menu Principal</a>
+}

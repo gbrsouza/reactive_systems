@@ -13,7 +13,8 @@ libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" 
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.5.18"
 libraryDependencies += "com.datastax.cassandra" % "cassandra-driver-core" % "3.6.0"
 libraryDependencies += "com.datastax.cassandra" % "cassandra-driver-mapping" % "3.6.0"
-libraryDependencies += "org.apache.spark" %% "spark-core" % "2.4.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "2.3.1"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.3.1"
 
 // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
 EclipseKeys.preTasks := Seq(compile in Compile, compile in Test)

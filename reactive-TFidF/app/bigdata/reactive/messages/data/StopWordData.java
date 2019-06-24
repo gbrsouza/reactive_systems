@@ -1,7 +1,10 @@
 package bigdata.reactive.messages.data;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
+import scala.collection.immutable.HashMap;
 
 public class StopWordData {
 
